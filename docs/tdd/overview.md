@@ -198,6 +198,37 @@ independent release, aggregate resource pressure, and operation without
 rendering. Verify that cached observations cannot bypass authoritative command
 validation.
 
+## Replaceable physics contract — September 6, 2026 addition
+
+Implements: REQ-046. Authority: D-011.
+
+The technical design must separate the ordinary consumer facade from the
+trusted, extensible integration contract used by replaceable physics modules.
+That contract must support coordinated GPU material access, scheduling of
+module compute work, module-owned state and resources, and authoritative
+material/placement updates without a required CPU round trip. A physics module
+that participates in deterministic replay must coordinate its own state and
+restoration with the substrate. No particular engine or algorithm is selected.
+
+Deep access does not mean uncontrolled writes: specify ownership, lifetimes,
+ordering, and publication responsibilities. Conversely, do not interpret
+existing "external behavior" or storage-isolation wording as a prohibition on
+trusted internal integration. Fixed consumer commands alone are not proof that
+an arbitrary future physics implementation can be integrated cleanly.
+
+Before decomposition, reconcile affected interface, GPU-runtime, collision,
+and validation contracts with this decision. Select a minimal demonstrator
+(potentially collision-only), not a full physics implementation. Validate that
+the substrate operates without that module, that the demonstrator uses the
+intended integration path, and that an alternative minimal module can replace
+it without changes spread through substrate subsystems. Preserve existing
+material-consistency and resource-lifetime guarantees. Scripted substitutions
+alone do not prove a real GPU integration path.
+
+This addition records the required architecture; it does not claim the existing
+detailed interface listings already implement it. Heat, forces, fracture, game
+ownership, and debris behavior remain deferred consumer/module work.
+
 ## Document map
 
 - [architecture.md](architecture.md): ownership, canonical state, sparse

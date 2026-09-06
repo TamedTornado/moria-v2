@@ -8,6 +8,35 @@ review history rather than replacing design substance.
 
 ## Resolved decisions
 
+### D-011. Deeply integrated, replaceable physics (2026-09-06)
+
+Jason clarified that physics is deferred implementation, not an external-only
+architectural restriction. Moria must support a fully featured, replaceable
+physics module with GPU-side integration as deep as needed. A narrow CPU-side
+adapter is not sufficient. The integration may include GPU material access,
+compute scheduling, module-owned simulation data, and participation in replay.
+No particular engine, physics algorithm, or shader port is selected.
+
+Moria's material storage, editing, persistence, and presentation remain usable
+without a particular physics implementation. Physics-specific behavior stays
+in replaceable modules rather than spreading through the substrate. Explicit
+ownership, lifetime, and execution coordination contracts are necessary, but
+must be extensible rather than a fixed catalogue of permitted physics effects.
+Deep integration does not require uncoordinated mutation of authoritative data.
+
+The first version establishes and tests this integration boundary with minimal
+functionality, potentially collision-only. It does not implement a full physics
+engine, heat propagation, forces, fracture, ship connectivity, or debris rules.
+The exact minimal demonstrator remains to be selected; this decision is not
+authorization to expand it into a physics implementation.
+
+The motivating consumer includes ships, giant stations, giant asteroids,
+debris fields, and other bodies. These are examples, not substrate entity types
+or game features to implement. Earlier references to external behavior mean
+separate ownership and replaceability, not mandatory process, CPU, or public
+consumer-API isolation. Conflicting restrictions must be reconciled before
+decomposition.
+
 ### D-010. Independently maintained CPU observation views (2026-09-06)
 
 Jason selected multiple consumer-defined, read-only CPU observation views of

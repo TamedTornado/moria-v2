@@ -125,6 +125,10 @@ matter or a timing-dependent fallback.
 
 ### 2.6 Behavior remains external
 
+Here, "external" means separately owned and replaceable behavior, not exclusion
+from the GPU runtime or restriction to the ordinary consumer facade. The
+physics integration requirement in REQ-046 clarifies this boundary.
+
 **Requirement: REQ-006. Authority: C-008, AD-007, D-008.**
 
 External systems may observe matter and lifecycle, perform any computation they
@@ -856,6 +860,37 @@ that sequence receives the same atomic publication, hashing, participant, and
 qualification guarantees.
 
 ## 6. Collision and dynamic-volume behavior
+
+### Replaceable physics integration
+
+**Requirement: REQ-046. Authority: D-011.**
+
+Physics is deferred, not architecturally excluded. Moria must accommodate a
+fully featured replaceable physics module, including deep GPU-side integration.
+The module may need coordinated access to GPU-resident material, compute
+execution, its own simulation data, and material and placement changes without
+mandatory CPU readback. The integration must be extensible, not limited to a
+hardcoded set of operations chosen for the first minimal implementation.
+
+Moria remains usable without a particular physics engine. Physics-specific
+behavior belongs in the module, not scattered through material storage,
+editing, persistence, and presentation. Ownership, resource lifetimes, and
+authority publication remain explicit even when integration is internal. A
+replayable physics implementation must be able to coordinate its state with
+Moria's replay; deterministic material edits alone do not establish that proof.
+
+The first version establishes and tests this boundary using minimal
+functionality, potentially collision-only. It must not build a complete physics
+engine or introduce privileged one-off integration that a replacement must
+undo. No forces, heat, fracture, ship-core connectivity, or debris rules are
+added to initial scope by this requirement. Nor does it promise arbitrary
+third-party physics code can be plugged in without adaptation.
+
+Existing consumer isolation requirements do not prohibit a distinct trusted
+module integration contract. Their purpose is to preserve ownership and
+material consistency, not force physics through UI-oriented queries.
+
+### Collision and volume contracts
 
 **Requirement: REQ-019. Authority: C-007, C-016, AD-005, D-003, D-007.**
 
