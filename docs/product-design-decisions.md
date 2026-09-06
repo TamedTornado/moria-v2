@@ -8,6 +8,26 @@ review history rather than replacing design substance.
 
 ## Resolved decisions
 
+### D-010. Independently maintained CPU observation views (2026-09-06)
+
+Jason selected multiple consumer-defined, read-only CPU observation views of
+GPU-authoritative material. A consumer may need a nearby region and several
+distant regions simultaneously; there is no privileged player or camera view.
+Background jobs refresh the views asynchronously. Consumers define the regions
+and information needed and may move, resize, or release individual views.
+
+Each view exposes readiness, coverage, and the revision of its published data.
+An unavailable answer is not empty material. Refresh is asynchronous, not a
+promise of instantaneous coherence with GPU state. Reading a published view
+does not require a new GPU round trip. Views are independent of rendering and
+are not authoritative inputs for approving mutations: commands still validate
+against authoritative state as appropriate.
+
+Memory and synchronization work are bounded across all views. Overlap may be
+shared internally without coupling consumer ownership. The prohibition on a
+full CPU mirror permits these bounded observation caches. Storage layout,
+copying algorithms, and scheduling mechanisms remain implementation choices.
+
 ### D-001. Multi-target matter mutation completion
 
 **Status:** Resolved by human product-design review.

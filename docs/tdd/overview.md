@@ -167,6 +167,37 @@ semantics do not vary by feature. Optional features may remove derived
 capabilities or stores, never change canonical bytes for the same declared
 contract.
 
+## CPU observation view contract — September 6, 2026 addition
+
+Implements: REQ-045. Authority: D-010.
+
+The public facade must support registering, updating, reading, and releasing
+multiple independently owned CPU observation views. Each request identifies
+its region and required information. Background jobs refresh bounded CPU
+snapshots from GPU-authoritative material independently of rendering. A read
+of a published snapshot is a CPU operation, not a per-read GPU query.
+
+Publish complete snapshots with explicit coverage and represented volume
+revisions. Expose initial readiness, unavailable coverage, and refresh failure;
+do not expose a partially copied snapshot as complete or relabel old coverage
+when a request moves. Keep publication and reader lifetime safe during refresh
+and release. These snapshots are observation caches, not rollback frontiers,
+not merely lifecycle-event resnapshots, and not another authority for edits.
+
+Account for retained snapshot memory and synchronization work across all views.
+Overlapping requests may share work or storage while preserving independent
+lifecycles. The full CPU voxel-mirror prohibition does not forbid these bounded
+caches. This addition requires corresponding facade and budget design in the
+interfaces chapter before decomposition; the existing interfaces do not yet
+constitute that completed design. No buffer layout, copying algorithm, exact
+budget, or scheduling implementation is selected by this decision.
+
+Validation must cover simultaneous disjoint views, refresh after edits,
+request movement, unavailable versus empty results, explicit revision lag,
+independent release, aggregate resource pressure, and operation without
+rendering. Verify that cached observations cannot bypass authoritative command
+validation.
+
 ## Document map
 
 - [architecture.md](architecture.md): ownership, canonical state, sparse

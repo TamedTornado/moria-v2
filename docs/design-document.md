@@ -259,6 +259,36 @@ interest source may represent a camera, editor selection, agent, benchmark
 route, or background tool. Moria does not assume that interest is camera-shaped
 or tied to a single player.
 
+### CPU observation views
+
+**Requirement: REQ-045. Authority: D-010.**
+
+A consumer can define multiple independently maintained, read-only CPU views
+of material in selected regions. These may serve nearby interaction, distant
+inspection, UI, or other CPU-side consumers. No view is implicitly tied to a
+player, camera, presentation interest, or rendered frame.
+
+The consumer specifies the region and information required and can move,
+resize, or release each view. Background work refreshes its CPU snapshot
+asynchronously from authoritative material. Reading an available snapshot does
+not require a fresh GPU query. Each published snapshot exposes its coverage
+and represented volume revisions; readiness and refresh failures are explicit.
+Readers must not see a partially copied update presented as a complete snapshot.
+Missing coverage or an initial update still in progress means unavailable,
+never empty material. Updating a requested region must not mislabel old data
+as covering the new request.
+
+These views support responsive observation, not synchronous GPU coherence or
+mutation authority. A consumer can act on an observation, but the subsequent
+command must account for changes since that observation under the normal
+authoritative mutation contract. View refresh timing cannot influence canonical
+state except through explicit consumer-submitted inputs.
+
+Memory and refresh work are bounded across all views, with explicit resource
+pressure rather than an unlimited CPU mirror. Internal sharing of overlapping
+views is permitted, not required. Exact representation and synchronization
+algorithms belong to technical design.
+
 ### Receipt and observation
 
 A receipt lets a consumer follow admitted asynchronous work to completion. An
