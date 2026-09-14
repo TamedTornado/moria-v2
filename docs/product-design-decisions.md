@@ -1,4 +1,4 @@
-# Product decisions — September 6, 2026
+# Product decisions — September 6, 2026, updated September 14
 
 Paraphrases of Jason's approved discussion, not verbatim quotations. This record
 replaces the historical decisions for active planning.
@@ -15,6 +15,7 @@ replaces the historical decisions for active planning.
 | DEC-08 | Measure representative exploration/editing early, derive budgets from evidence and review, retain measurements and guard regressions. High performance is required, not a late optimization wish. |
 | DEC-09 | No first-version weapons, heat propagation, forces, fracture, ship-core classification, debris rules or full game. Storage representation is an engineering decision. |
 | DEC-10 | Reconcile seeds/GDD, retire old TDD, then generate a new TDD in Bro V4 with drafting and adversarial review agents. Do not handwrite its replacement. |
+| DEC-11 | Approved September 14: support independently replaceable renderers and composable rendering layers, without changing material truth or ordinary consumer logic beyond presentation configuration. Provide coordinated material access without requiring meshes or coupling renderers to raw storage internals. Prove the boundary early with one useful renderer, a minimal alternative and a diagnostic overlay, including bounded resources and safe removal/replacement. Exact interfaces and composition conventions belong to the TDD; multiple production renderers and advanced lighting are not required. |
 
 Reference hardware, workload scale, performance budgets and the exact minimal
 collision demonstrator remain to be selected with engineering evidence.

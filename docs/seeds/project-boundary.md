@@ -1,6 +1,7 @@
 # Moria product boundary
 
 Current authority: Jason's September 6, 2026 product reconciliation.
+Rendering extensibility clarification approved September 14, 2026.
 
 Moria is reusable, high-performance sparse voxel-world infrastructure for Rust
 and Bevy consumers. It owns material volumes and the operations needed to
@@ -16,6 +17,16 @@ Keep active detailed material and bulk work GPU-oriented, with sparse storage
 for empty and homogeneous regions. Consumers can register multiple bounded,
 read-only CPU observation views refreshed asynchronously and independently of
 rendering. There is no mandatory full CPU voxel mirror.
+
+Presentation supports replaceable renderers and composable rendering layers.
+Changing renderer must not require changes to material storage, editing,
+persistence or ordinary consumer logic beyond presentation configuration.
+Renderers derive their own resources from coordinated material access, not a
+mandatory mesh intermediate or exposed storage internals. Removing presentation
+does not disable material operations, collision or CPU views. Prove replacement
+and composition early with one useful renderer, a minimal alternative and a
+diagnostic overlay; multiple production renderers and advanced lighting are
+not first-version requirements. Exact interfaces belong to the TDD.
 
 Physics is deferred implementation, not an external-only restriction. Support
 deeply integrated, replaceable physics modules, including GPU compute and

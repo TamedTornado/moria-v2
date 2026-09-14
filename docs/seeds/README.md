@@ -1,7 +1,8 @@
 # Current planning authority
 
 1. [Product boundary](project-boundary.md): current approved intent.
-2. [Decisions](../product-design-decisions.md): approved September 6 decisions.
+2. [Decisions](../product-design-decisions.md): approved September 6 decisions
+   and September 14 rendering extensibility clarification.
 3. [GDD](../design-document.md): first-version behavior and acceptance.
 
 There is no active TDD yet. Bro V4 will generate it with adversarial review.

@@ -1,6 +1,7 @@
 # Moria product design
 
 Status: reconciled product baseline, September 6, 2026; not a technical design.
+Updated September 14, 2026 with approved rendering extensibility requirements.
 Authority: [seed](seeds/project-boundary.md) and
 [decisions](product-design-decisions.md).
 
@@ -61,12 +62,43 @@ and synchronization work. Overlapping requests may share storage or transfers,
 but need not do so. Freshness lag is visible; instantaneous coherence is not
 promised. Views support responsive observation, not mutation authority.
 
-### MOR-05 — Derived presentation (DEC-01, DEC-07)
+### MOR-05 — Replaceable, composable derived presentation (DEC-01, DEC-07, DEC-11)
 
 Display exterior and cavern surfaces from material truth, including newly cut
 surfaces. Presentation may lag, but cannot redefine occupancy or collision.
 Make material, voids and edits legible without requiring fancy game art.
 Do not prescribe cube aesthetics, SDFs or a meshing method at product level.
+
+Support both replacement of the material-surface renderer and composition of
+multiple rendering layers, such as surfaces and consumer-owned diagnostic or
+interaction overlays. Consumers can select, add and remove presentation
+implementations through supported integration points. Replacing a renderer
+must not require changes to material storage, editing, persistence or ordinary
+consumer logic beyond presentation configuration. Material operations,
+collision and CPU observation views remain usable without a renderer.
+
+Provide coordinated GPU material access, volume placements, revision/change
+information and explicit residency/availability information. Access must not
+depend on a mandatory mesh intermediate or require coupling consumers to raw
+storage internals. Renderers own their derived meshes, acceleration structures,
+caches and other resources; these never become material authority. A renderer
+may require particular hardware capabilities, which must be explicit rather
+than silently assumed by the substrate.
+
+Define compatible coordinate, depth and composition conventions so supported
+layers can coexist correctly. Bound aggregate presentation resources and
+update work, report failures or unavailable data, and safely retire resources
+on layer removal or renderer replacement after outstanding GPU work completes.
+Exact access interfaces, scheduling and composition mechanisms belong to the
+TDD; arbitrary third-party renderers need not work without adaptation.
+
+Prove replacement and composition early using one useful surface renderer, a
+minimal alternative and a diagnostic overlay through the public consumer
+boundary. Demonstrate newly cut surfaces with each renderer and the overlay
+alongside either renderer; verify removal/replacement leaves material results,
+CPU views and collision semantics unaffected and does not leak or prematurely
+reclaim resources. This is a minimal integration proof, not a requirement for
+two production-quality renderers, hardware ray tracing or advanced lighting.
 
 ### MOR-06 — Replaceable physics integration (DEC-04)
 
@@ -137,6 +169,11 @@ cover multiple-view lifecycle, pressure, repeatability, save/load, failures and
 module replacement. Mock-only tests cannot prove real material-to-collision,
 material-to-presentation or GPU-access plumbing. Performance requires retained
 measurements and agreed budgets; it is not yet qualified.
+
+Presentation acceptance also covers the MOR-05 renderer replacement and layer
+composition proof on real GPU paths, including edits, independent CPU views,
+collision and safe resource retirement. Presentation configuration and layer
+selection are part of retained performance evidence.
 
 Deferred: networking; cross-GPU bit identity; live rollback and its fixed window
 or performance tier; coordinated participant rewind; full physics, heat,
